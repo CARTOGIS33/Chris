@@ -38,12 +38,12 @@
         <script src="data/POS_FAMILLE_2.js"></script>
         <script src="data/Rayon_10Kms_3.js"></script>
         <script src="data/Rayon_30Kms_4.js"></script>
-        <script src="data/_5.js"></script>
+        <script src="data/Dpartement_5.js"></script>
         <script src="data/limite_administrative_6.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[42.401055816132626,0.6591156553657702],[44.84113912905253,6.689873700254462]]);
+        }).fitBounds([[41.73284788707459,-4.034144442211197],[48.007840386379236,9.641713826375643]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -218,7 +218,7 @@
                 lineJoin: 'miter',
                 weight: 2.0, 
                 fill: true,
-                fillOpacity: 0.4,
+                fillOpacity: 0.3,
                 fillColor: 'rgba(62,208,45,1.0)',
                 interactive: false,
             }
@@ -281,13 +281,10 @@
         });
         bounds_group.addLayer(layer_Rayon_30Kms_4);
         map.addLayer(layer_Rayon_30Kms_4);
-        function pop__5(feature, layer) {
+        function pop_Dpartement_5(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['ogc_fid'] !== null ? autolinker.link(feature.properties['ogc_fid'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['ogc_fid0'] !== null ? autolinker.link(feature.properties['ogc_fid0'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['code_insee'] !== null ? autolinker.link(feature.properties['code_insee'].toLocaleString()) : '') + '</td>\
@@ -295,49 +292,37 @@
                     <tr>\
                         <td colspan="2">' + (feature.properties['nom'] !== null ? autolinker.link(feature.properties['nom'].toLocaleString()) : '') + '</td>\
                     </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['surf_km2'] !== null ? autolinker.link(feature.properties['surf_km2'].toLocaleString()) : '') + '</td>\
-                    </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style__5_0() {
+        function style_Dpartement_5_0() {
             return {
-                pane: 'pane__5',
-                radius: 5.55112e-16,
+                pane: 'pane_Dpartement_5',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(190,207,80,1.0)',
+                weight: 2.0, 
+                fillOpacity: 0,
                 interactive: false,
             }
         }
-        map.createPane('pane__5');
-        map.getPane('pane__5').style.zIndex = 405;
-        map.getPane('pane__5').style['mix-blend-mode'] = 'normal';
-        var layer__5 = new L.geoJson(json__5, {
+        map.createPane('pane_Dpartement_5');
+        map.getPane('pane_Dpartement_5').style.zIndex = 405;
+        map.getPane('pane_Dpartement_5').style['mix-blend-mode'] = 'normal';
+        var layer_Dpartement_5 = new L.geoJson(json_Dpartement_5, {
             attribution: '',
             interactive: false,
-            dataVar: 'json__5',
-            layerName: 'layer__5',
-            pane: 'pane__5',
-            onEachFeature: pop__5,
-            pointToLayer: function (feature, latlng) {
-                var context = {
-                    feature: feature,
-                    variables: {}
-                };
-                return L.circleMarker(latlng, style__5_0(feature));
-            },
+            dataVar: 'json_Dpartement_5',
+            layerName: 'layer_Dpartement_5',
+            pane: 'pane_Dpartement_5',
+            onEachFeature: pop_Dpartement_5,
+            style: style_Dpartement_5_0,
         });
-        bounds_group.addLayer(layer__5);
-        map.addLayer(layer__5);
+        bounds_group.addLayer(layer_Dpartement_5);
+        map.addLayer(layer_Dpartement_5);
         function pop_limite_administrative_6(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
@@ -369,19 +354,6 @@
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
-                weight: 3.0,
-                fillOpacity: 0,
-                interactive: false,
-            }
-                    break;
-                case 'Limite de département':
-                    return {
-                pane: 'pane_limite_administrative_6',
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'round',
-                lineJoin: 'round',
                 weight: 3.0,
                 fillOpacity: 0,
                 interactive: false,
@@ -422,11 +394,21 @@
             } else if (map.getZoom() > 19 || map.getZoom() < 13) {
                 map.removeLayer(layer_VueSatellite_1);
             }
+            if (map.getZoom() <= 19 && map.getZoom() >= 7) {
+                map.addLayer(layer_Dpartement_5);
+            } else if (map.getZoom() > 19 || map.getZoom() < 7) {
+                map.removeLayer(layer_Dpartement_5);
+            }
         });
             if (map.getZoom() <= 19 && map.getZoom() >= 13) {
                 map.addLayer(layer_VueSatellite_1);
             } else if (map.getZoom() > 19 || map.getZoom() < 13) {
                 map.removeLayer(layer_VueSatellite_1);
+            }
+            if (map.getZoom() <= 19 && map.getZoom() >= 7) {
+                map.addLayer(layer_Dpartement_5);
+            } else if (map.getZoom() > 19 || map.getZoom() < 7) {
+                map.removeLayer(layer_Dpartement_5);
             }
         var osmGeocoder = new L.Control.Geocoder({
             collapsed: true,
@@ -439,30 +421,30 @@
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
         .title += 'Search for a place';
         var baseMaps = {};
-        L.control.layers(baseMaps,{'limite_administrative<br /><table><tr><td style="text-align: center;"><img src="legend/limite_administrative_6_Frontièreinternationale0.png" /></td><td>Frontière internationale</td></tr><tr><td style="text-align: center;"><img src="legend/limite_administrative_6_Limitededépartement1.png" /></td><td>Limite de département</td></tr><tr><td style="text-align: center;"><img src="legend/limite_administrative_6_Limitederégion2.png" /></td><td>Limite de région</td></tr></table>': layer_limite_administrative_6,'<img src="legend/_5.png" /> ': layer__5,'<img src="legend/Rayon_30Kms_4.png" /> Rayon_30Kms': layer_Rayon_30Kms_4,'<img src="legend/Rayon_10Kms_3.png" /> Rayon_10Kms': layer_Rayon_10Kms_3,'POS_FAMILLE<br /><table><tr><td style="text-align: center;"><img src="legend/POS_FAMILLE_2_Emeline0.png" /></td><td>Emeline</td></tr><tr><td style="text-align: center;"><img src="legend/POS_FAMILLE_2_Laurence1.png" /></td><td>Laurence</td></tr><tr><td style="text-align: center;"><img src="legend/POS_FAMILLE_2_Manon2.png" /></td><td>Manon</td></tr><tr><td style="text-align: center;"><img src="legend/POS_FAMILLE_2_PapyJJ3.png" /></td><td>Papy_J-J</td></tr></table>': layer_POS_FAMILLE_2,"Vue Satellite": layer_VueSatellite_1,"Google Road": layer_GoogleRoad_0,}).addTo(map);
+        L.control.layers(baseMaps,{'limite_administrative<br /><table><tr><td style="text-align: center;"><img src="legend/limite_administrative_6_Frontièreinternationale0.png" /></td><td>Frontière internationale</td></tr><tr><td style="text-align: center;"><img src="legend/limite_administrative_6_Limitederégion1.png" /></td><td>Limite de région</td></tr></table>': layer_limite_administrative_6,'<img src="legend/Dpartement_5.png" /> Département': layer_Dpartement_5,'<img src="legend/Rayon_30Kms_4.png" /> Rayon_30Kms': layer_Rayon_30Kms_4,'<img src="legend/Rayon_10Kms_3.png" /> Rayon_10Kms': layer_Rayon_10Kms_3,'POS_FAMILLE<br /><table><tr><td style="text-align: center;"><img src="legend/POS_FAMILLE_2_Emeline0.png" /></td><td>Emeline</td></tr><tr><td style="text-align: center;"><img src="legend/POS_FAMILLE_2_Laurence1.png" /></td><td>Laurence</td></tr><tr><td style="text-align: center;"><img src="legend/POS_FAMILLE_2_Manon2.png" /></td><td>Manon</td></tr><tr><td style="text-align: center;"><img src="legend/POS_FAMILLE_2_PapyJJ3.png" /></td><td>Papy_J-J</td></tr></table>': layer_POS_FAMILLE_2,"Vue Satellite": layer_VueSatellite_1,"Google Road": layer_GoogleRoad_0,}).addTo(map);
         setBounds();
         var i = 0;
-        layer__5.eachLayer(function(layer) {
+        layer_Dpartement_5.eachLayer(function(layer) {
             var context = {
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((exp_label__5_eval_expression(context) !== null?String('<div style="color: #000000; font-size: 10pt; font-weight: bold; font-family: \'MS Shell Dlg 2\', sans-serif;">' + exp_label__5_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css__5'});
+            layer.bindTooltip((exp_label_Dpartement_5_eval_expression(context) !== null?String('<div style="color: #000000; font-size: 10pt; font-weight: bold; font-family: \'MS Shell Dlg 2\', sans-serif;">' + exp_label_Dpartement_5_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Dpartement_5'});
             labels.push(layer);
             totalMarkers += 1;
               layer.added = true;
               addLabel(layer, i);
               i++;
         });
-        resetLabels([layer__5]);
+        resetLabels([layer_Dpartement_5]);
         map.on("zoomend", function(){
-            resetLabels([layer__5]);
+            resetLabels([layer_Dpartement_5]);
         });
         map.on("layeradd", function(){
-            resetLabels([layer__5]);
+            resetLabels([layer_Dpartement_5]);
         });
         map.on("layerremove", function(){
-            resetLabels([layer__5]);
+            resetLabels([layer_Dpartement_5]);
         });
         </script>
     </body>
